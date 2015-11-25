@@ -5,7 +5,7 @@ import hex from 'hex-rgb';
 
 const rgb = (str) => hex(str).map(x => x / 255);
 
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 
 // http://www.newmediacampaigns.com/blog/refactoring-react-components-to-es6-classes
@@ -65,16 +65,16 @@ var CONTACT_TEMPLATE = {name: '', email: '', description: '', errors: null};
 /* Actions */
 
 function updateNewContact(contact) {
-	setState({ newContact: contact });
+	setState({newContact: contact});
 }
 
 function submitNewContact() {
 	var contact = Object.assign({}, state.newContact, {key: state.contacts.length + 1, errors: {}});
 
 	if (contact.name && contact.email) {
-		var changes = { newContact: contact };
-		if(Object.keys(contact.errors).length === 0)
-			Object.assign(changes, { contacts: state.contacts.concat(contact) });
+		var changes = {newContact: contact};
+		if (Object.keys(contact.errors).length === 0)
+			Object.assign(changes, {contacts: state.contacts.concat(contact)});
 		setState(changes);
 	}
 }
@@ -103,3 +103,11 @@ setState({
 	],
 	newContact: Object.assign({}, CONTACT_TEMPLATE)
 });
+
+import StatelessInput from './StatelessInput';
+
+// pass value as empty string to make it read only
+var emptyInput = {type: 'text', value: ''};
+//only spread ... works, this doesn't
+//ReactDOM.render(<ReadOnlyInput {{type: 'date', value: ''}} />, document.querySelector('#read-only-input'));
+ReactDOM.render(<StatelessInput {...emptyInput} />, document.querySelector('#read-only-input'));
