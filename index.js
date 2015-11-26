@@ -104,10 +104,22 @@ setState({
 	newContact: Object.assign({}, CONTACT_TEMPLATE)
 });
 
+/* example of unidirectional flow */
+
 import StatelessInput from './StatelessInput';
 
-// pass value as empty string to make it read only
-var emptyInput = {type: 'text', value: ''};
-//only spread ... works, this doesn't
-//ReactDOM.render(<ReadOnlyInput {{type: 'date', value: ''}} />, document.querySelector('#read-only-input'));
-ReactDOM.render(<StatelessInput {...emptyInput} />, document.querySelector('#read-only-input'));
+var inputState = {};
+
+function updateInput(e) {
+	setInputState({value: e.target.value + 'aaa'})
+}
+
+// pass value as an empty string to make it a controlled component and thus use unidirectional flow
+var emptyInput = {type: 'text', value: '', onChange: updateInput};
+
+function setInputState(changes) {
+	Object.assign(inputState, changes);
+	ReactDOM.render(<StatelessInput {...inputState} />, document.querySelector('#read-only-input'));
+}
+
+setInputState(emptyInput);
